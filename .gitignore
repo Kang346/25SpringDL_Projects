@@ -1,0 +1,6 @@
+# ignore data files
+/data/
+# ignore model parameters
+resnet_cifar.pth
+# ignore pycache
+__pycache__/*
