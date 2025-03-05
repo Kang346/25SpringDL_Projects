@@ -1,5 +1,5 @@
 # ignore data files
-/data/
+/rh/data/
 # ignore model parameters
 resnet_cifar.pth
 # ignore pycache
