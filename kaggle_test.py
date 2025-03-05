@@ -23,17 +23,14 @@ images = images.reshape(-1, 32, 32, 3).astype(np.float32)
 images = images / 255.0  
 
 transform = transforms.Compose([
-    transforms.RandomCrop(32, padding=4),
-    transforms.RandomHorizontalFlip(),
-    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
-    transforms.ToTensor(),
     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
 ])
 
 # convert the images to tensor
 images = np.transpose(images, (0, 3, 1, 2))
-images = [Image.fromarray((img.transpose(1, 2, 0) * 255).astype(np.uint8)) for img in images]
-images = torch.stack([transform(image) for image in images])
+images = torch.tensor(images, dtype=torch.float32)
+
+images = torch.stack([transform(img) for img in images])
 
 
 # Convert image tensor to a displayable format
