@@ -2,11 +2,13 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from tqdm import tqdm
+from torchsummary import summary
 
 import config
 from dataset import load_data
-from model import ResNetCIFAR10
+from model import CustomResNet
 from utils import plot_loss_accuracy
+from evaluate import evaluate_model
 
 def train_model(epochs=config.EPOCHS, batch_size=config.BATCH_SIZE, learning_rate=config.LEARNING_RATE):
     print("Loading data...")
@@ -16,9 +18,10 @@ def train_model(epochs=config.EPOCHS, batch_size=config.BATCH_SIZE, learning_rat
     
     print("Loading model...")
     # load model
-    model = ResNetCIFAR10()
+    model = CustomResNet()
     criterion = nn.CrossEntropyLoss()  # use cross entropy loss
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate) # use Adam optimizer
+    optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=5e-4)  # use SGD optimizer
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs)
     print("Model loaded successfully.")
     
     # check if GPU is available
@@ -26,9 +29,13 @@ def train_model(epochs=config.EPOCHS, batch_size=config.BATCH_SIZE, learning_rat
     model.to(device)
     print(f"Using device: {device}")
 
+    # print model summary
+    summary(model, (3, 32, 32))
+
     # store loss and accuracy
     losses = []
-    accuracies = []
+    train_acc = []
+    test_acc = []
     
     # training
     for epoch in range(epochs):
@@ -58,11 +65,30 @@ def train_model(epochs=config.EPOCHS, batch_size=config.BATCH_SIZE, learning_rat
         
         # store loss and accuracy
         losses.append(running_loss/len(trainloader))
-        accuracies.append(100 * correct / total)
+        train_acc.append(100 * correct / total)
 
         print(f"Epoch [{epoch+1}/{epochs}], Loss: {running_loss/len(trainloader):.4f}, Accuracy: {100 * correct / total:.2f}%")
+
+        # Step the scheduler
+        scheduler.step()
+
+        # Evaluate on test data
+        model.eval()
+        test_correct = 0
+        test_total = 0
+        with torch.no_grad():
+            for inputs, labels in testloader:
+                inputs, labels = inputs.to(device), labels.to(device)
+                outputs = model(inputs)
+                _, predicted = torch.max(outputs, 1)
+                test_total += labels.size(0)
+                test_correct += (predicted == labels).sum().item()
+        
+        test_accuracy = 100 * test_correct / test_total
+        test_acc.append(test_accuracy)
+        print(f"Test Accuracy: {test_accuracy:.2f}%")
     # plot loss and accuracy
-    plot_loss_accuracy(losses, accuracies)
+    plot_loss_accuracy(losses, train_acc)
 
     print("Finished Training")
     torch.save(model.state_dict(), 'resnet_cifar.pth')  # save the model

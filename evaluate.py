@@ -1,5 +1,5 @@
 import torch
-from model import ResNetCIFAR10
+from model import CustomResNet
 from dataset import load_data
 
 def evaluate_model():
@@ -7,8 +7,8 @@ def evaluate_model():
     _, testloader = load_data()
     
     # load model
-    model = ResNetCIFAR10()
-    model.load_state_dict(torch.load('resnet_cifar.pth'))  # laod the trained model parameters
+    model = CustomResNet()
+    model.load_state_dict(torch.load('best_model.pth'))  # laod the trained model parameters
     model.eval()
 
     # check if GPU is available
@@ -26,6 +26,7 @@ def evaluate_model():
             correct += (predicted == labels).sum().item()
 
     print(f"Test Accuracy: {100 * correct / total:.2f}%")
+
 
 if __name__ == "__main__":
     evaluate_model()
