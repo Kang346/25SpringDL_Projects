@@ -8,7 +8,7 @@ from torchvision import transforms
 from PIL import Image
 
 # read the kaggle custom dataset
-with open('data/cifar_test_nolabel.pkl', 'rb') as f:
+with open('rh/data/cifar_test_nolabel.pkl', 'rb') as f:
     data = pickle.load(f)
 
 images = data[b'data']
