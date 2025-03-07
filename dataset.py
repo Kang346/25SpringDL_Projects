@@ -3,6 +3,7 @@ import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 from matplotlib import pyplot as plt
+import numpy as np
 
 def load_data(batch_size = 64):
     transform = transforms.Compose([
@@ -16,7 +17,7 @@ def load_data(batch_size = 64):
     # download CIFAR10 dataset
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
     testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
-    
+
     # dataloader
     trainloader = DataLoader(trainset, batch_size=batch_size, shuffle=True)
     testloader = DataLoader(testset, batch_size=batch_size, shuffle=False)
@@ -40,6 +41,7 @@ def show_image(img_tensor, label):
     plt.show()
 
 if __name__ == "__main__":
+
     trainloader, testloader = load_data()
     print(f"Number of training batches: {len(trainloader)}")
     print(f"Number of testing batches: {len(testloader)}")

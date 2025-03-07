@@ -1,4 +1,4 @@
-import pickle 
+import pickle
 import torch
 from model import CustomResNet
 import numpy as np
@@ -20,7 +20,7 @@ print(f'Shape of image: {images[0].shape}')
 
 # convert the data to tensor
 images = images.reshape(-1, 32, 32, 3).astype(np.float32)
-images = images / 255.0  
+images = images / 255.0
 
 transform = transforms.Compose([
     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
@@ -39,7 +39,7 @@ def show_image(img_tensor):
     img = img_tensor.permute(1, 2, 0).numpy()
 
     # Normalize the image to [0, 1]
-    img = (img - img.min()) / (img.max() - img.min())  
+    img = (img - img.min()) / (img.max() - img.min())
 
     # Display the image
     plt.imshow(img)
@@ -52,7 +52,7 @@ for _ in range(1):
 
 # load the model
 model = CustomResNet()
-model.load_state_dict(torch.load('best_model.pth'))
+model.load_state_dict(torch.load('resnet_cifar.pth'))
 
 # check if GPU is available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -73,3 +73,5 @@ with open('submission.csv', 'w') as f:
     f.write('ID,Labels\n')
     for i, pred in zip(ids, predictions):
         f.write(f'{i},{pred}\n')
+
+print("Finished!")
