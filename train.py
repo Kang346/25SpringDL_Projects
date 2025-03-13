@@ -65,17 +65,17 @@ def train_model(epochs=config.EPOCHS, batch_size=config.BATCH_SIZE, learning_rat
     
 
     # load softmax from teacher model
-    teacher_softmax = np.load("teacher_softmax_outputs.npy")  
-    teacher_softmax = torch.tensor(teacher_softmax, dtype=torch.float32)  
+    # teacher_softmax = np.load("teacher_softmax_outputs.npy")  
+    # teacher_softmax = torch.tensor(teacher_softmax, dtype=torch.float32)  
     # teacher_softmax = TensorDataset(teacher_softmax)
 
-    print("teacher_softmax shape:", teacher_softmax.shape)
-    print("trainloader dataset shape:", len(trainloader.dataset))
+    # print("teacher_softmax shape:", teacher_softmax.shape)
+    # print("trainloader dataset shape:", len(trainloader.dataset))
 
-    teacher_softmax_loader = torch.utils.data.DataLoader(teacher_softmax, batch_size=batch_size, shuffle=False)
+    # teacher_softmax_loader = torch.utils.data.DataLoader(teacher_softmax, batch_size=batch_size, shuffle=False)
 
 
-    temperature = 3.0 
+    # temperature = 3.0 
 
     # training
     for epoch in range(epochs):
@@ -96,25 +96,25 @@ def train_model(epochs=config.EPOCHS, batch_size=config.BATCH_SIZE, learning_rat
         correct = 0
         total = 0
         # use tqdm to show progress bar
-        for (inputs, labels), batch_teacher_softmax in tqdm(zip(trainloader, teacher_softmax_loader), total=len(trainloader)):
+        for inputs, labels in tqdm(trainloader):
             inputs, labels = inputs.to(device), labels.to(device)
 
             # forward + backward + optimize
-            # if config.CUTMIX_PROB > 0.0 and torch.rand(1).item() < config.CUTMIX_PROB:
-            #     alpha = 1.0
-            #     inputs, labels_a, labels_b, lam = cutmix_data(inputs, labels, alpha)
-            #     outputs = model(inputs)
-            #     loss = lam * criterion(outputs, labels_a) + (1 - lam) * criterion(outputs, labels_b)
-            # else:
-            #     outputs = model(inputs)
-            #     loss = criterion(outputs, labels)
+            if config.CUTMIX_PROB > 0.0 and torch.rand(1).item() < config.CUTMIX_PROB:
+                alpha = 1.0
+                inputs, labels_a, labels_b, lam = cutmix_data(inputs, labels, alpha)
+                outputs = model(inputs)
+                loss = lam * criterion(outputs, labels_a) + (1 - lam) * criterion(outputs, labels_b)
+            else:
+                outputs = model(inputs)
+                loss = criterion(outputs, labels)
 
 
-                # weights = torch.ones_like(labels, dtype=torch.float32)
-                # weights[labels == 3] = 3.0  
-                # weights[labels == 9] = 3.0  
-                # weights[labels == 2] = 3.0  
-                # loss = (loss * weights).mean()
+            weights = torch.ones_like(labels, dtype=torch.float32)
+            weights[labels == 3] = 3.0  
+            # weights[labels == 9] = 3.0  
+            weights[labels == 2] = 3.0  
+            loss = (loss * weights).mean()
 
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -123,37 +123,37 @@ def train_model(epochs=config.EPOCHS, batch_size=config.BATCH_SIZE, learning_rat
             # loss.backward()
 
             # 获取当前批次的 teacher_softmax 输出
-            batch_teacher_softmax = batch_teacher_softmax.to(device)
+            # batch_teacher_softmax = batch_teacher_softmax.to(device)
 
 
-            assert inputs.size(0) == batch_teacher_softmax.size(0), f"Batch size mismatch: {inputs.size(0)} != {batch_teacher_softmax.size(0)}"
+            # assert inputs.size(0) == batch_teacher_softmax.size(0), f"Batch size mismatch: {inputs.size(0)} != {batch_teacher_softmax.size(0)}"
 
             # 获取学生模型的输出
-            student_output = model(inputs)  # inputs 是当前训练数据
+            # student_output = model(inputs)  # inputs 是当前训练数据
 
             # 计算学生模型的 softmax 输出
-            student_softmax = F.log_softmax(student_output / temperature, dim=1)  # 使用温度调节
+            # student_softmax = F.log_softmax(student_output / temperature, dim=1)  # 使用温度调节
 
 
             # 计算 KL 散度损失
-            soft_loss = kl_criterion(student_softmax, batch_teacher_softmax)  # 计算 KL 散度损失
+            # soft_loss = kl_criterion(student_softmax, batch_teacher_softmax)  # 计算 KL 散度损失
 
             # 计算硬标签的交叉熵损失
-            hard_loss = F.cross_entropy(student_output, labels)  # hard_labels 是传统的硬标签
+            # hard_loss = F.cross_entropy(student_output, labels)  # hard_labels 是传统的硬标签
 
             # 合并损失（软标签 + 硬标签）
-            alpha = 0.7  # 软标签的权重
-            final_loss = alpha * soft_loss + (1 - alpha) * hard_loss
+            # alpha = 0.7  # 软标签的权重
+            # final_loss = alpha * soft_loss + (1 - alpha) * hard_loss
 
             # 反向传播并更新参数 
-            final_loss.backward()
+            loss.backward()
 
             # optimize
             optimizer.step()
 
             # statistics
-            running_loss += final_loss.item()
-            _, predicted = torch.max(student_output, 1)
+            running_loss += loss.item()
+            _, predicted = torch.max(outputs, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 

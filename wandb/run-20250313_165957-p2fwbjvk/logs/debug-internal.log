@@ -1,0 +1,7 @@
+{"time":"2025-03-13T16:59:57.7409139-04:00","level":"INFO","msg":"stream: starting","core version":"0.19.8","symlink path":"C:\\Users\\Kang\\Learning\\25Spring_dl\\tmp\\25SpringDL_Projects\\wandb\\run-20250313_165957-p2fwbjvk\\logs\\debug-core.log"}
+{"time":"2025-03-13T16:59:57.8505776-04:00","level":"INFO","msg":"created new stream","id":"p2fwbjvk"}
+{"time":"2025-03-13T16:59:57.8511351-04:00","level":"INFO","msg":"stream: started","id":"p2fwbjvk"}
+{"time":"2025-03-13T16:59:57.85138-04:00","level":"INFO","msg":"sender: started","stream_id":"p2fwbjvk"}
+{"time":"2025-03-13T16:59:57.85138-04:00","level":"INFO","msg":"writer: Do: started","stream_id":"p2fwbjvk"}
+{"time":"2025-03-13T16:59:57.8514827-04:00","level":"INFO","msg":"handler: started","stream_id":"p2fwbjvk"}
+{"time":"2025-03-13T16:59:58.0598359-04:00","level":"INFO","msg":"Starting system monitor"}
