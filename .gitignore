@@ -5,3 +5,9 @@
 resnet_cifar.pth
 # ignore pycache
 __pycache__/*
+# ignore images
+kaggle_test_images/
+
+submission (1).csv
+compare.py
+teacher_softmax_outputs.npy
