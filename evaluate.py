@@ -14,10 +14,7 @@ def evaluate_model():
     
     # load model
     model = CustomResNet()
-    checkpoint = torch.load('best_model.pth')  # load the trained model parameters
-
-    epoch = checkpoint['epoch']
-    print(f"Model trained for {epoch} epochs")
+    checkpoint = torch.load('best_model.pth')
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
 
