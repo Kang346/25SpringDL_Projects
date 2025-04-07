@@ -1,0 +1,20 @@
+{"time":"2025-04-07T18:31:31.3625633-04:00","level":"INFO","msg":"stream: starting","core version":"0.19.8","symlink path":"c:\\Users\\Kang\\Learning\\25Spring_dl\\project2\\wandb\\run-20250407_183131-qaopml8i\\logs\\debug-core.log"}
+{"time":"2025-04-07T18:31:31.6592956-04:00","level":"INFO","msg":"created new stream","id":"qaopml8i"}
+{"time":"2025-04-07T18:31:31.6598363-04:00","level":"INFO","msg":"stream: started","id":"qaopml8i"}
+{"time":"2025-04-07T18:31:31.6598363-04:00","level":"INFO","msg":"writer: Do: started","stream_id":"qaopml8i"}
+{"time":"2025-04-07T18:31:31.6599668-04:00","level":"INFO","msg":"handler: started","stream_id":"qaopml8i"}
+{"time":"2025-04-07T18:31:31.6599668-04:00","level":"INFO","msg":"sender: started","stream_id":"qaopml8i"}
+{"time":"2025-04-07T18:31:31.8592659-04:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-04-07T18:38:52.2335893-04:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-04-07T18:38:52.2460177-04:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-04-07T18:38:52.3259048-04:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-04-07T18:38:52.3331325-04:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-04-07T18:38:55.4206706-04:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-04-07T18:39:29.8424748-04:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-04-07T18:39:29.8439594-04:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-04-07T18:39:34.4760435-04:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-04-07T18:39:38.7717641-04:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-04-07T18:39:38.7922158-04:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-04-07T18:40:04.2067493-04:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-04-07T18:40:43.2334558-04:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-04-07T18:40:43.2471751-04:00","level":"INFO","msg":"Pausing system monitor"}
